@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Explore Domains - Startup Idea Validator{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1>Explore Startup Domains</h1>
+        <p>Discover trending startup ideas across different industries</p>
+    </div>
+</section>
+
+<section class="domains-section">
+    <div class="container">
+        <div class="domains-grid">
+            {% for domain_key, domain in domains.items() %}
+            <div class="domain-card" data-domain="{{ domain_key }}">
+                <div class="domain-header">
+                    <h3>{{ domain.name }}</h3>
+                    <p>{{ domain.description }}</p>
+                </div>
+                <div class="domain-ideas">
+                    <h4>Popular Ideas:</h4>
+                    <ul>
+                        {% for idea in domain.ideas[:3] %}
+                        <li>{{ idea }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <button class="btn btn-outline explore-btn" data-domain="{{ domain_key }}">
+                    Explore More
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Modal for domain details -->
+<div id="domainModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription"></p>
+        <div id="modalIdeas"></div>
+        <button class="btn btn-primary" id="validateFromModal">
+            Validate Custom Idea
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('domainModal');
+    const closeBtn = document.querySelector('.close');
+    const exploreButtons = document.querySelectorAll('.explore-btn');
+
+    exploreButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const domain = this.dataset.domain;
+            fetchDomainDetails(domain);
+        });
+    });
+
+    closeBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    function fetchDomainDetails(domain) {
+        fetch(`/api/get-domain-ideas/${domain}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('modalTitle').textContent = data.name;
+                document.getElementById('modalDescription').textContent = data.description;
+                
+                const ideasContainer = document.getElementById('modalIdeas');
+                ideasContainer.innerHTML = '<h4>All Ideas:</h4><ul>' + 
+                    data.ideas.map(idea => `<li>${idea}</li>`).join('') + 
+                    '</ul>';
+                
+                modal.style.display = 'block';
+            });
+    }
+
+    document.getElementById('validateFromModal').addEventListener('click', function() {
+        window.location.href = '/validate';
+    });
+});
+</script>
+{% endblock %}
