@@ -2,38 +2,19 @@
 
 {% block content %}
 <section class="hero">
-    <div class="hero-content">
-        <h1 class="hero-title">
-            <span class="gradient-text">Shark Tank</span> 
-            but AI-Powered
-        </h1>
-        <p class="hero-subtitle">
-            Validate your startup ideas instantly with AI-powered analysis, market research, and expert feedback
-        </p>
-        <div class="hero-buttons">
-            <a href="/validate" class="btn btn-primary">
-                <i class="fas fa-lightbulb"></i>
-                Validate My Idea
-            </a>
-            <a href="/domains" class="btn btn-secondary">
-                <i class="fas fa-search"></i>
-                Explore Domains
-            </a>
-        </div>
-    </div>
-    <div class="hero-visual">
-        <div class="floating-cards">
-            <div class="card floating-card">
-                <i class="fas fa-chart-line"></i>
-                <h3>Market Analysis</h3>
-            </div>
-            <div class="card floating-card">
-                <i class="fas fa-users"></i>
-                <h3>Target Audience</h3>
-            </div>
-            <div class="card floating-card">
-                <i class="fas fa-trophy"></i>
-                <h3>Competitor Research</h3>
+    <div class="container">
+        <div class="hero-content">
+            <h1>Shark Tank but AI-Powered</h1>
+            <p>Validate your startup ideas with AI analysis, market research, and community feedback. Get comprehensive insights in minutes, not months.</p>
+            <div class="hero-actions">
+                <a href="/validate" class="btn btn-primary">
+                    <i class="fas fa-rocket"></i>
+                    Validate My Idea
+                </a>
+                <a href="/domains" class="btn btn-outline">
+                    <i class="fas fa-search"></i>
+                    Explore Ideas
+                </a>
             </div>
         </div>
     </div>
@@ -41,35 +22,58 @@
 
 <section class="features">
     <div class="container">
-        <h2 class="section-title">Why Choose StartupValidator?</h2>
+        <h2>How It Works</h2>
         <div class="features-grid">
-            <div class="feature-card">
+            <div class="feature">
                 <div class="feature-icon">
-                    <i class="fas fa-robot"></i>
+                    <i class="fas fa-edit"></i>
                 </div>
-                <h3>AI-Powered Analysis</h3>
-                <p>Get instant insights powered by GPT-4 and advanced market analysis algorithms</p>
+                <h3>1. Submit Your Idea</h3>
+                <p>Describe your startup concept in detail. Include the problem you're solving and your proposed solution.</p>
             </div>
-            <div class="feature-card">
+            <div class="feature">
                 <div class="feature-icon">
-                    <i class="fas fa-trending-up"></i>
+                    <i class="fas fa-brain"></i>
                 </div>
-                <h3>Market Trends</h3>
-                <p>Real-time market demand analysis using Google Trends API and industry data</p>
+                <h3>2. AI Analysis</h3>
+                <p>Our AI analyzes your idea using GPT-4, market data, and competitor research to generate insights.</p>
             </div>
-            <div class="feature-card">
+            <div class="feature">
                 <div class="feature-icon">
-                    <i class="fas fa-comments"></i>
+                    <i class="fas fa-chart-line"></i>
                 </div>
-                <h3>Community Feedback</h3>
-                <p>Get feedback from both AI and real entrepreneurs in our community</p>
+                <h3>3. Get Results</h3>
+                <p>Receive a comprehensive report with market demand, viability score, and actionable recommendations.</p>
             </div>
-            <div class="feature-card">
+            <div class="feature">
                 <div class="feature-icon">
-                    <i class="fas fa-file-alt"></i>
+                    <i class="fas fa-users"></i>
                 </div>
-                <h3>Detailed Reports</h3>
-                <p>Comprehensive 1-pager reports with problem, solution, and market analysis</p>
+                <h3>4. Community Feedback</h3>
+                <p>Share with our community of entrepreneurs and get real feedback from experienced founders.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat">
+                <h3>500+</h3>
+                <p>Ideas Validated</p>
+            </div>
+            <div class="stat">
+                <h3>85%</h3>
+                <p>Accuracy Rate</p>
+            </div>
+            <div class="stat">
+                <h3>200+</h3>
+                <p>Active Users</p>
+            </div>
+            <div class="stat">
+                <h3>30 sec</h3>
+                <p>Average Analysis Time</p>
             </div>
         </div>
     </div>
@@ -77,12 +81,9 @@
 
 <section class="cta">
     <div class="container">
-        <h2>Ready to Validate Your Next Big Idea?</h2>
-        <p>Join thousands of entrepreneurs who trust StartupValidator</p>
-        <a href="/validate" class="btn btn-primary btn-large">
-            Get Started Now
-            <i class="fas fa-arrow-right"></i>
-        </a>
+        <h2>Ready to Validate Your Startup Idea?</h2>
+        <p>Join entrepreneurs who are making data-driven decisions about their startup ideas.</p>
+        <a href="/validate" class="btn btn-primary">Get Started Now</a>
     </div>
 </section>
 {% endblock %}

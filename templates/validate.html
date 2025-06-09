@@ -6,94 +6,94 @@
 <section class="page-header">
     <div class="container">
         <h1>Validate Your Startup Idea</h1>
-        <p>Get AI-powered insights and community feedback on your startup concept</p>
+        <p>Get AI-powered analysis and community feedback on your startup concept.</p>
     </div>
 </section>
 
-<section class="validation-section">
+<section class="validation">
     <div class="container">
-        <div class="validation-form-container">
-            <form id="ideaForm" class="idea-form">
+        <div class="validation-form">
+            <form id="ideaForm">
                 <div class="form-group">
                     <label for="ideaInput">Describe Your Startup Idea</label>
                     <textarea 
                         id="ideaInput" 
                         name="idea" 
-                        placeholder="e.g., A mobile app that connects dog owners with local dog walkers using AI matching algorithms..."
+                        placeholder="Example: A mobile app that connects dog owners with local dog walkers using AI matching algorithms. The app would include GPS tracking, payment processing, and review systems..."
                         required
                     ></textarea>
+                    <small>Be as detailed as possible for better analysis results.</small>
                 </div>
-                <button type="submit" class="btn btn-primary btn-large" id="validateBtn">
+                <button type="submit" class="btn btn-primary" id="validateBtn">
                     <i class="fas fa-magic"></i>
-                    Validate My Idea
+                    Analyze My Idea
                 </button>
             </form>
         </div>
 
-        <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+        <div id="loadingState" class="loading" style="display: none;">
             <div class="spinner"></div>
             <p>Analyzing your idea with AI...</p>
         </div>
 
-        <div id="validationResults" class="validation-results" style="display: none;">
+        <div id="results" class="results" style="display: none;">
             <div class="results-header">
                 <h2>Validation Report</h2>
-                <div class="viability-score">
-                    <span>Viability Score:</span>
-                    <div class="score-circle">
-                        <span id="scoreValue">0</span>%
-                    </div>
+                <div class="score">
+                    <span class="score-label">Viability Score</span>
+                    <span class="score-value" id="scoreValue">0</span>
+                    <span class="score-max">/100</span>
                 </div>
             </div>
 
-            <div class="results-grid">
-                <div class="result-card">
+            <div class="results-content">
+                <div class="result-section">
                     <h3><i class="fas fa-exclamation-triangle"></i> Problem Statement</h3>
                     <p id="problemText"></p>
                 </div>
-                <div class="result-card">
+
+                <div class="result-section">
                     <h3><i class="fas fa-lightbulb"></i> Solution Overview</h3>
                     <p id="solutionText"></p>
                 </div>
-                <div class="result-card">
+
+                <div class="result-section">
                     <h3><i class="fas fa-users"></i> Target Audience</h3>
                     <p id="audienceText"></p>
                 </div>
-                <div class="result-card">
+
+                <div class="result-section">
                     <h3><i class="fas fa-chart-bar"></i> Market Demand</h3>
-                    <div class="demand-indicator">
+                    <div class="demand-level">
                         <span id="demandLevel"></span>
                         <div class="demand-bar">
                             <div id="demandProgress"></div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="competitors-section">
-                <h3><i class="fas fa-trophy"></i> Key Competitors</h3>
-                <div id="competitorsList"></div>
-            </div>
+                <div class="result-section">
+                    <h3><i class="fas fa-trophy"></i> Key Competitors</h3>
+                    <div id="competitorsList"></div>
+                </div>
 
-            <div class="recommendations-section">
-                <h3><i class="fas fa-star"></i> AI Recommendations</h3>
-                <ul id="recommendationsList"></ul>
-            </div>
+                <div class="result-section">
+                    <h3><i class="fas fa-star"></i> Recommendations</h3>
+                    <ul id="recommendationsList"></ul>
+                </div>
 
-            <div class="feedback-section">
-                <h3><i class="fas fa-comments"></i> Community Feedback</h3>
-                <form id="feedbackForm" class="feedback-form">
-                    <textarea 
-                        id="feedbackInput" 
-                        placeholder="Share your thoughts on this startup idea..."
-                        required
-                    ></textarea>
-                    <button type="submit" class="btn btn-secondary">
-                        Submit Feedback
-                    </button>
-                </form>
-                <div id="feedbackList" class="feedback-list">
-                    <!-- Feedback items will be loaded here -->
+                <div class="feedback-section">
+                    <h3><i class="fas fa-comments"></i> Share for Community Feedback</h3>
+                    <form id="feedbackForm">
+                        <textarea 
+                            id="feedbackInput" 
+                            placeholder="Ask the community for specific feedback on your idea..."
+                            required
+                        ></textarea>
+                        <button type="submit" class="btn btn-outline">
+                            Share with Community
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -105,8 +105,8 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const ideaForm = document.getElementById('ideaForm');
-    const loadingSpinner = document.getElementById('loadingSpinner');
-    const validationResults = document.getElementById('validationResults');
+    const loadingState = document.getElementById('loadingState');
+    const results = document.getElementById('results');
     const feedbackForm = document.getElementById('feedbackForm');
 
     ideaForm.addEventListener('submit', function(e) {
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const feedbackInput = document.getElementById('feedbackInput').value;
         
         if (!feedbackInput.trim()) {
-            alert('Please enter your feedback');
+            alert('Please enter your feedback request');
             return;
         }
 
@@ -134,8 +134,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function validateIdea(idea) {
-        loadingSpinner.style.display = 'block';
-        validationResults.style.display = 'none';
+        loadingState.style.display = 'block';
+        results.style.display = 'none';
 
         fetch('/api/validate-idea', {
             method: 'POST',
@@ -147,12 +147,12 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             displayResults(data);
-            loadingSpinner.style.display = 'none';
-            validationResults.style.display = 'block';
+            loadingState.style.display = 'none';
+            results.style.display = 'block';
         })
         .catch(error => {
             console.error('Error:', error);
-            loadingSpinner.style.display = 'none';
+            loadingState.style.display = 'none';
             alert('Error validating idea. Please try again.');
         });
     }
@@ -170,11 +170,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const demandPercentage = data.market_demand === 'High' ? 80 : 
                                 data.market_demand === 'Medium' ? 50 : 20;
         demandProgress.style.width = demandPercentage + '%';
-        demandProgress.className = `demand-progress ${data.market_demand.toLowerCase()}`;
+        demandProgress.className = `demand-fill ${data.market_demand.toLowerCase()}`;
 
         const competitorsList = document.getElementById('competitorsList');
         competitorsList.innerHTML = data.competitors.map(comp => 
-            `<span class="competitor-tag">${comp}</span>`
+            `<span class="competitor">${comp}</span>`
         ).join('');
 
         const recommendationsList = document.getElementById('recommendationsList');
@@ -193,12 +193,12 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => response.json())
         .then(data => {
-            alert('Feedback submitted successfully!');
+            alert('Shared with community successfully!');
             document.getElementById('feedbackInput').value = '';
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Error submitting feedback. Please try again.');
+            alert('Error sharing feedback. Please try again.');
         });
     }
 });

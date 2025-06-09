@@ -48,20 +48,44 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(el)
   })
 
-  // Add loading states to buttons
-  const buttons = document.querySelectorAll(".btn")
-  buttons.forEach((button) => {
+  // Form validation helper
+  const forms = document.querySelectorAll("form")
+  forms.forEach((form) => {
+    form.addEventListener("submit", (e) => {
+      const textareas = form.querySelectorAll("textarea[required]")
+      let isValid = true
+
+      textareas.forEach((textarea) => {
+        if (!textarea.value.trim()) {
+          isValid = false
+          textarea.style.borderColor = "#e74c3c"
+        } else {
+          textarea.style.borderColor = "#ced4da"
+        }
+      })
+
+      if (!isValid) {
+        e.preventDefault()
+        showNotification("Please fill in all required fields", "error")
+      }
+    })
+  })
+
+  // Add loading state to buttons
+  const submitButtons = document.querySelectorAll('button[type="submit"]')
+  submitButtons.forEach((button) => {
     button.addEventListener("click", function () {
-      if (this.type === "submit") {
+      const form = this.closest("form")
+      if (form && form.checkValidity()) {
         const originalText = this.innerHTML
-        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...'
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...'
         this.disabled = true
 
-        // Re-enable button after 3 seconds (adjust based on your needs)
+        // Reset button after 5 seconds (fallback)
         setTimeout(() => {
           this.innerHTML = originalText
           this.disabled = false
-        }, 3000)
+        }, 5000)
       }
     })
   })
@@ -135,14 +159,14 @@ function showNotification(message, type = "success") {
         position: fixed;
         top: 20px;
         right: 20px;
-        padding: 1rem 2rem;
-        border-radius: 10px;
+        padding: 1rem 1.5rem;
+        border-radius: 6px;
         color: white;
-        font-weight: 600;
+        font-weight: 500;
         z-index: 3000;
         transform: translateX(100%);
         transition: transform 0.3s ease;
-        background: ${type === "success" ? "#28a745" : "#dc3545"};
+        background: ${type === "success" ? "#27ae60" : "#e74c3c"};
     `
 
   document.body.appendChild(notification)
@@ -156,7 +180,9 @@ function showNotification(message, type = "success") {
   setTimeout(() => {
     notification.style.transform = "translateX(100%)"
     setTimeout(() => {
-      document.body.removeChild(notification)
+      if (document.body.contains(notification)) {
+        document.body.removeChild(notification)
+      }
     }, 300)
   }, 3000)
 }
