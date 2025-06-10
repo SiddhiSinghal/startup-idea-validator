@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Startup Idea Validator</title>
+    <title>AI Startup Idea Validator</title>
     <style>
         * {
             margin: 0;
@@ -39,6 +39,36 @@
         header p {
             font-size: 1.2rem;
             opacity: 0.9;
+        }
+
+        .api-setup {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .api-setup h3 {
+            color: #4c1d95;
+            margin-bottom: 1rem;
+        }
+
+        .api-setup p {
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        .api-setup a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .api-setup a:hover {
+            text-decoration: underline;
         }
 
         .main-content {
@@ -289,14 +319,40 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        .error-message {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .api-key-input {
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🚀 Startup Idea Validator</h1>
-            <p>Validate your startup idea with AI-powered analysis and comprehensive scoring</p>
+            <h1>🤖 AI Startup Idea Validator</h1>
+            <p>Get intelligent, AI-powered analysis of your startup idea with detailed insights and recommendations</p>
         </header>
+
+        <div class="api-setup full-width">
+            <h3>🔑 API Setup Required</h3>
+            <p>To use AI-powered analysis, you need a Google Gemini API key (free tier available):</p>
+            <p>1. Visit <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a> to get your free API key</p>
+            <p>2. Enter your API key below to enable AI analysis</p>
+            
+            <div class="form-group api-key-input">
+                <label for="apiKey">Google Gemini API Key</label>
+                <input type="password" id="apiKey" placeholder="Enter your Gemini API key here..." />
+            </div>
+        </div>
 
         <div class="main-content">
             <div class="card input-section">
@@ -354,73 +410,66 @@
                     </div>
 
                     <button type="submit" class="validate-btn" id="validateBtn">
-                        Validate My Idea ✨
+                        🤖 Analyze with AI ✨
                     </button>
                 </form>
 
+                <div class="error-message" id="errorMessage"></div>
+
                 <div class="loading" id="loading">
                     <div class="spinner"></div>
-                    <p>Analyzing your startup idea...</p>
+                    <p>AI is analyzing your startup idea...</p>
                 </div>
             </div>
 
             <div class="card results-section" id="results">
                 <div class="tabs">
                     <div class="tab active" data-tab="overview">Overview</div>
-                    <div class="tab" data-tab="detailed">Detailed</div>
-                    <div class="tab" data-tab="recommendations">Tips</div>
+                    <div class="tab" data-tab="detailed">AI Analysis</div>
+                    <div class="tab" data-tab="recommendations">AI Recommendations</div>
                 </div>
 
                 <div class="tab-content active" id="overview">
                     <div class="score-display">
                         <div class="score-circle" id="overallScore">
-                            85/100
+                            --/100
                         </div>
-                        <h3 id="scoreLabel">Great Potential!</h3>
+                        <h3 id="scoreLabel">AI Analysis Loading...</h3>
                         <div class="progress-bar">
-                            <div class="progress-fill" id="progressFill" style="width: 85%"></div>
+                            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
                         </div>
                     </div>
 
                     <ul class="criteria-list" id="criteriaList">
-                        <!-- Criteria will be populated by JavaScript -->
+                        <!-- Criteria will be populated by AI -->
                     </ul>
                 </div>
 
                 <div class="tab-content" id="detailed">
                     <div id="detailedAnalysis">
-                        <!-- Detailed analysis will be populated here -->
+                        <!-- AI analysis will be populated here -->
                     </div>
                 </div>
 
                 <div class="tab-content" id="recommendations">
                     <div class="recommendations">
-                        <h3>💡 Recommendations for Success</h3>
-                        <ul class="rec-list" id="recommendationsList">
-                            <!-- Recommendations will be populated here -->
-                        </ul>
+                        <h3>🤖 AI-Powered Recommendations</h3>
+                        <div id="aiRecommendations">
+                            <!-- AI recommendations will be populated here -->
+                        </div>
                     </div>
                 </div>
 
                 <button class="export-btn" onclick="exportResults()">
-                    📄 Export Report
+                    📄 Export AI Report
                 </button>
             </div>
         </div>
     </div>
 
     <script>
-        // Validation criteria and scoring logic
-        const validationCriteria = {
-            marketSize: { weight: 0.2, name: "Market Size" },
-            problemSolution: { weight: 0.25, name: "Problem-Solution Fit" },
-            uniqueness: { weight: 0.15, name: "Uniqueness" },
-            feasibility: { weight: 0.2, name: "Technical Feasibility" },
-            businessModel: { weight: 0.1, name: "Business Model" },
-            competition: { weight: 0.1, name: "Competitive Advantage" }
-        };
-
         let currentResults = null;
+        let apiKey = '';
 
         // Form submission
         document.getElementById('ideaForm').addEventListener('submit', function(e) {
@@ -435,17 +484,34 @@
             });
         });
 
+        // API key input
+        document.getElementById('apiKey').addEventListener('input', function(e) {
+            apiKey = e.target.value.trim();
+        });
+
         function switchTab(tabName) {
-            // Update active tab
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
             
-            // Update active content
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.getElementById(tabName).classList.add('active');
         }
 
-        function validateIdea() {
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        async function validateIdea() {
+            if (!apiKey) {
+                showError('Please enter your Google Gemini API key first!');
+                return;
+            }
+
             const formData = {
                 title: document.getElementById('ideaTitle').value,
                 description: document.getElementById('ideaDescription').value,
@@ -459,161 +525,91 @@
             document.getElementById('validateBtn').disabled = true;
             document.getElementById('loading').style.display = 'block';
 
-            // Simulate API call with timeout
-            setTimeout(() => {
-                const results = analyzeIdea(formData);
+            try {
+                const results = await analyzeIdeaWithAI(formData);
                 displayResults(results);
-                
+                document.getElementById('results').classList.add('show');
+            } catch (error) {
+                console.error('Analysis error:', error);
+                showError('AI analysis failed. Please check your API key and try again.');
+            } finally {
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('validateBtn').disabled = false;
-                document.getElementById('results').classList.add('show');
-            }, 2000);
+            }
         }
 
-        function analyzeIdea(data) {
-            // Simulated analysis logic - in real app, this would call an AI API
-            const scores = {
-                marketSize: calculateMarketScore(data),
-                problemSolution: calculateProblemSolutionScore(data),
-                uniqueness: calculateUniquenessScore(data),
-                feasibility: calculateFeasibilityScore(data),
-                businessModel: calculateBusinessModelScore(data),
-                competition: calculateCompetitionScore(data)
-            };
+        async function analyzeIdeaWithAI(data) {
+            const prompt = `
+You are an expert startup advisor. Analyze this startup idea and provide detailed feedback:
 
-            const overallScore = Object.keys(scores).reduce((total, key) => {
-                return total + (scores[key] * validationCriteria[key].weight);
-            }, 0);
+STARTUP IDEA:
+Title: ${data.title}
+Description: ${data.description}
+Target Market: ${data.targetMarket}
+Industry: ${data.industry}
+Business Model: ${data.businessModel}
+Known Competitors: ${data.competition || 'None specified'}
 
+Please provide your analysis in the following JSON format:
+{
+    "overallScore": [number from 0-100],
+    "scores": {
+        "marketSize": [0-100],
+        "problemSolution": [0-100],
+        "uniqueness": [0-100],
+        "feasibility": [0-100],
+        "businessModel": [0-100],
+        "competition": [0-100]
+    },
+    "strengths": [array of 3-5 key strengths],
+    "weaknesses": [array of 3-5 key weaknesses],
+    "opportunities": [array of 3-5 opportunities],
+    "threats": [array of 3-5 potential threats],
+    "recommendations": [array of 5-8 specific actionable recommendations],
+    "marketAnalysis": "Detailed market analysis paragraph",
+    "competitiveAnalysis": "Detailed competitive landscape analysis",
+    "riskAssessment": "Key risks and mitigation strategies",
+    "nextSteps": [array of immediate next steps to take]
+}
+
+Be thorough, honest, and provide actionable insights. Consider market trends, scalability, technical feasibility, and business viability.
+            `;
+
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: prompt
+                        }]
+                    }]
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('API request failed');
+            }
+
+            const result = await response.json();
+            const aiResponse = result.candidates[0].content.parts[0].text;
+            
+            // Extract JSON from AI response
+            const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+            if (!jsonMatch) {
+                throw new Error('Invalid AI response format');
+            }
+
+            const analysis = JSON.parse(jsonMatch[0]);
+            
             currentResults = {
-                scores,
-                overallScore: Math.round(overallScore),
-                formData: data,
-                analysis: generateDetailedAnalysis(data, scores),
-                recommendations: generateRecommendations(data, scores)
+                ...analysis,
+                formData: data
             };
 
             return currentResults;
-        }
-
-        function calculateMarketScore(data) {
-            // Scoring based on industry and description keywords
-            let score = 60; // Base score
-            
-            if (data.industry === 'technology') score += 15;
-            if (data.industry === 'healthcare') score += 10;
-            if (data.description.toLowerCase().includes('ai') || 
-                data.description.toLowerCase().includes('automation')) score += 15;
-            if (data.targetMarket.length > 20) score += 10;
-            
-            return Math.min(score, 100);
-        }
-
-        function calculateProblemSolutionScore(data) {
-            let score = 50;
-            
-            if (data.description.toLowerCase().includes('problem') || 
-                data.description.toLowerCase().includes('solve')) score += 20;
-            if (data.description.length > 100) score += 15;
-            if (data.targetMarket.length > 15) score += 15;
-            
-            return Math.min(score, 100);
-        }
-
-        function calculateUniquenessScore(data) {
-            let score = 70;
-            
-            if (data.competition.length < 10) score += 20;
-            if (data.description.toLowerCase().includes('unique') || 
-                data.description.toLowerCase().includes('innovative')) score += 10;
-            
-            return Math.min(score, 100);
-        }
-
-        function calculateFeasibilityScore(data) {
-            let score = 75;
-            
-            const complexKeywords = ['ai', 'blockchain', 'quantum', 'vr', 'ar'];
-            const hasComplex = complexKeywords.some(keyword => 
-                data.description.toLowerCase().includes(keyword));
-            
-            if (hasComplex) score -= 15;
-            if (data.businessModel === 'saas' || data.businessModel === 'subscription') score += 10;
-            
-            return Math.max(score, 30);
-        }
-
-        function calculateBusinessModelScore(data) {
-            const modelScores = {
-                'subscription': 85,
-                'freemium': 75,
-                'saas': 90,
-                'marketplace': 80,
-                'ecommerce': 70,
-                'advertising': 65,
-                'transaction': 75,
-                'other': 60
-            };
-            
-            return modelScores[data.businessModel] || 60;
-        }
-
-        function calculateCompetitionScore(data) {
-            let score = 70;
-            
-            if (data.competition.length === 0) score += 20;
-            else if (data.competition.length < 50) score += 10;
-            else score -= 10;
-            
-            return Math.max(score, 40);
-        }
-
-        function generateDetailedAnalysis(data, scores) {
-            return {
-                strengths: [
-                    scores.problemSolution > 80 ? "Strong problem-solution fit identified" : null,
-                    scores.marketSize > 75 ? "Large addressable market potential" : null,
-                    scores.uniqueness > 70 ? "Good differentiation from competitors" : null,
-                    scores.businessModel > 80 ? "Solid business model choice" : null
-                ].filter(Boolean),
-                
-                weaknesses: [
-                    scores.competition < 60 ? "High competitive pressure" : null,
-                    scores.feasibility < 70 ? "Technical implementation challenges" : null,
-                    scores.marketSize < 60 ? "Limited market size" : null,
-                    scores.uniqueness < 50 ? "Lacks differentiation" : null
-                ].filter(Boolean),
-                
-                opportunities: [
-                    "Market expansion potential",
-                    "Partnership opportunities",
-                    "Technology advancement benefits",
-                    "First-mover advantage possibility"
-                ]
-            };
-        }
-
-        function generateRecommendations(data, scores) {
-            const recs = [];
-            
-            if (scores.marketSize < 70) {
-                recs.push("Conduct deeper market research to identify niche opportunities");
-            }
-            if (scores.problemSolution < 75) {
-                recs.push("Validate the problem with potential customers through surveys/interviews");
-            }
-            if (scores.competition < 65) {
-                recs.push("Develop a stronger unique value proposition to stand out");
-            }
-            if (scores.feasibility < 70) {
-                recs.push("Create a technical roadmap and consider MVP approach");
-            }
-            
-            recs.push("Build a landing page to test market interest");
-            recs.push("Connect with potential customers early in the development process");
-            recs.push("Consider joining startup accelerators or incubators");
-            
-            return recs;
         }
 
         function displayResults(results) {
@@ -629,29 +625,38 @@
             const criteriaList = document.getElementById('criteriaList');
             criteriaList.innerHTML = '';
             
+            const criteriaNames = {
+                marketSize: "Market Size & Potential",
+                problemSolution: "Problem-Solution Fit",
+                uniqueness: "Uniqueness & Innovation",
+                feasibility: "Technical Feasibility",
+                businessModel: "Business Model Viability",
+                competition: "Competitive Advantage"
+            };
+
             Object.keys(results.scores).forEach(key => {
                 const li = document.createElement('li');
                 li.className = 'criteria-item';
                 li.innerHTML = `
-                    <span>${validationCriteria[key].name}</span>
+                    <span>${criteriaNames[key] || key}</span>
                     <span class="criteria-score ${getScoreClass(results.scores[key])}">${results.scores[key]}/100</span>
                 `;
                 criteriaList.appendChild(li);
             });
             
             // Update detailed analysis
-            updateDetailedAnalysis(results.analysis);
+            updateDetailedAnalysis(results);
             
             // Update recommendations
-            updateRecommendations(results.recommendations);
+            updateRecommendations(results);
         }
 
         function getScoreLabel(score) {
-            if (score >= 85) return "Excellent Potential! 🌟";
-            if (score >= 70) return "Great Potential! 🚀";
-            if (score >= 55) return "Good Potential 👍";
-            if (score >= 40) return "Needs Work ⚠️";
-            return "High Risk ❌";
+            if (score >= 85) return "🌟 Exceptional Potential!";
+            if (score >= 70) return "🚀 Strong Potential!";
+            if (score >= 55) return "👍 Good Potential";
+            if (score >= 40) return "⚠️ Needs Improvement";
+            return "❌ High Risk";
         }
 
         function getScoreClass(score) {
@@ -661,53 +666,85 @@
             return "score-poor";
         }
 
-        function updateDetailedAnalysis(analysis) {
+        function updateDetailedAnalysis(results) {
             const container = document.getElementById('detailedAnalysis');
             container.innerHTML = `
                 <div style="margin-bottom: 2rem;">
-                    <h3 style="color: #22c55e; margin-bottom: 1rem;">💪 Strengths</h3>
+                    <h3 style="color: #22c55e; margin-bottom: 1rem;">💪 Key Strengths</h3>
                     <ul style="list-style-type: disc; padding-left: 1.5rem;">
-                        ${analysis.strengths.map(s => `<li style="margin-bottom: 0.5rem;">${s}</li>`).join('')}
+                        ${results.strengths.map(s => `<li style="margin-bottom: 0.5rem;">${s}</li>`).join('')}
                     </ul>
                 </div>
                 
                 <div style="margin-bottom: 2rem;">
-                    <h3 style="color: #ef4444; margin-bottom: 1rem;">⚠️ Areas for Improvement</h3>
+                    <h3 style="color: #ef4444; margin-bottom: 1rem;">⚠️ Areas of Concern</h3>
                     <ul style="list-style-type: disc; padding-left: 1.5rem;">
-                        ${analysis.weaknesses.map(w => `<li style="margin-bottom: 0.5rem;">${w}</li>`).join('')}
+                        ${results.weaknesses.map(w => `<li style="margin-bottom: 0.5rem;">${w}</li>`).join('')}
                     </ul>
                 </div>
                 
-                <div>
-                    <h3 style="color: #3b82f6; margin-bottom: 1rem;">🎯 Opportunities</h3>
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: #3b82f6; margin-bottom: 1rem;">🎯 Market Opportunities</h3>
                     <ul style="list-style-type: disc; padding-left: 1.5rem;">
-                        ${analysis.opportunities.map(o => `<li style="margin-bottom: 0.5rem;">${o}</li>`).join('')}
+                        ${results.opportunities.map(o => `<li style="margin-bottom: 0.5rem;">${o}</li>`).join('')}
                     </ul>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: #8b5cf6; margin-bottom: 1rem;">📊 Market Analysis</h3>
+                    <p style="line-height: 1.6; color: #555;">${results.marketAnalysis}</p>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: #f59e0b; margin-bottom: 1rem;">🏆 Competitive Landscape</h3>
+                    <p style="line-height: 1.6; color: #555;">${results.competitiveAnalysis}</p>
+                </div>
+
+                <div>
+                    <h3 style="color: #dc2626; margin-bottom: 1rem;">⚡ Risk Assessment</h3>
+                    <p style="line-height: 1.6; color: #555;">${results.riskAssessment}</p>
                 </div>
             `;
         }
 
-        function updateRecommendations(recommendations) {
-            const list = document.getElementById('recommendationsList');
-            list.innerHTML = recommendations.map(rec => `<li>${rec}</li>`).join('');
+        function updateRecommendations(results) {
+            const container = document.getElementById('aiRecommendations');
+            container.innerHTML = `
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: #92400e; margin-bottom: 1rem;">🎯 Strategic Recommendations</h4>
+                    <ul class="rec-list">
+                        ${results.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 style="color: #92400e; margin-bottom: 1rem;">🚀 Immediate Next Steps</h4>
+                    <ol style="list-style-type: decimal; padding-left: 1.5rem;">
+                        ${results.nextSteps.map(step => `<li style="margin-bottom: 0.5rem; color: #78350f;">${step}</li>`).join('')}
+                    </ol>
+                </div>
+            `;
         }
 
         function exportResults() {
             if (!currentResults) return;
             
             const reportContent = `
-STARTUP IDEA VALIDATION REPORT
-============================
+AI STARTUP IDEA VALIDATION REPORT
+=================================
 
 Idea: ${currentResults.formData.title}
-Overall Score: ${currentResults.overallScore}/100
+Overall AI Score: ${currentResults.overallScore}/100
 
-DETAILED SCORES:
-${Object.keys(currentResults.scores).map(key => 
-    `${validationCriteria[key].name}: ${currentResults.scores[key]}/100`
-).join('\n')}
+DETAILED AI SCORES:
+Market Size & Potential: ${currentResults.scores.marketSize}/100
+Problem-Solution Fit: ${currentResults.scores.problemSolution}/100
+Uniqueness & Innovation: ${currentResults.scores.uniqueness}/100
+Technical Feasibility: ${currentResults.scores.feasibility}/100
+Business Model Viability: ${currentResults.scores.businessModel}/100
+Competitive Advantage: ${currentResults.scores.competition}/100
 
-DESCRIPTION:
+IDEA DESCRIPTION:
 ${currentResults.formData.description}
 
 TARGET MARKET:
@@ -716,17 +753,38 @@ ${currentResults.formData.targetMarket}
 INDUSTRY: ${currentResults.formData.industry}
 BUSINESS MODEL: ${currentResults.formData.businessModel}
 
-RECOMMENDATIONS:
+KEY STRENGTHS:
+${currentResults.strengths.map(s => `• ${s}`).join('\n')}
+
+AREAS OF CONCERN:
+${currentResults.weaknesses.map(w => `• ${w}`).join('\n')}
+
+MARKET OPPORTUNITIES:
+${currentResults.opportunities.map(o => `• ${o}`).join('\n')}
+
+AI RECOMMENDATIONS:
 ${currentResults.recommendations.map(rec => `• ${rec}`).join('\n')}
 
-Generated on: ${new Date().toLocaleDateString()}
+IMMEDIATE NEXT STEPS:
+${currentResults.nextSteps.map((step, i) => `${i+1}. ${step}`).join('\n')}
+
+MARKET ANALYSIS:
+${currentResults.marketAnalysis}
+
+COMPETITIVE ANALYSIS:
+${currentResults.competitiveAnalysis}
+
+RISK ASSESSMENT:
+${currentResults.riskAssessment}
+
+Generated by AI on: ${new Date().toLocaleDateString()}
             `;
             
             const blob = new Blob([reportContent], { type: 'text/plain' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${currentResults.formData.title.replace(/\s+/g, '_')}_validation_report.txt`;
+            a.download = `${currentResults.formData.title.replace(/\s+/g, '_')}_AI_validation_report.txt`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
