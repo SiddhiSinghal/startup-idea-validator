@@ -7,54 +7,103 @@ app = Flask(__name__)
 
 # Sample data for domains and startup ideas
 DOMAINS = {
-    "fintech": {
-        "name": "FinTech",
-        "description": "Financial Technology Solutions",
+    "finance": {
+        "name": "Finance",
+        "description": "Financial Solutions & Services",
         "ideas": [
             "AI-powered personal finance advisor",
             "Blockchain-based micro-lending platform",
             "Cryptocurrency portfolio management tool",
-            "Digital banking for small businesses"
+            "Digital banking for small businesses",
+            "Automated investment portfolio rebalancer"
         ]
     },
-    "healthtech": {
-        "name": "HealthTech",
-        "description": "Healthcare Technology Innovation",
+    "healthcare": {
+        "name": "Healthcare",
+        "description": "Health & Medical Innovation",
         "ideas": [
             "Telemedicine platform for rural areas",
             "AI diagnostic tool for medical imaging",
             "Mental health chatbot companion",
-            "Wearable health monitoring device"
+            "Wearable health monitoring device",
+            "Personalized nutrition planning app"
         ]
     },
-    "edtech": {
-        "name": "EdTech",
-        "description": "Educational Technology Solutions",
+    "education": {
+        "name": "Education",
+        "description": "Learning & Development",
         "ideas": [
             "Personalized learning AI tutor",
             "Virtual reality classroom experiences",
             "Skill-based job matching platform",
-            "Gamified coding education app"
+            "Gamified coding education app",
+            "Language learning with AI conversation partners"
         ]
     },
-    "ecommerce": {
-        "name": "E-Commerce",
-        "description": "Online Commerce Solutions",
+    "shopping": {
+        "name": "Shopping",
+        "description": "Online Retail & Commerce",
         "ideas": [
             "AR-powered virtual try-on platform",
             "Sustainable product marketplace",
             "Social commerce integration tool",
-            "AI-powered inventory management"
+            "AI-powered inventory management",
+            "Subscription box curation service"
         ]
     },
-    "proptech": {
-        "name": "PropTech",
-        "description": "Property Technology Innovation",
+    "realestate": {
+        "name": "Real Estate",
+        "description": "Property & Housing Solutions",
         "ideas": [
             "Smart home automation platform",
             "Real estate investment analyzer",
             "Virtual property tour creator",
-            "Rental property management system"
+            "Rental property management system",
+            "AI-powered property valuation tool"
+        ]
+    },
+    "food": {
+        "name": "Food",
+        "description": "Food & Dining Solutions",
+        "ideas": [
+            "AI-powered recipe recommendation app",
+            "Food waste reduction platform",
+            "Smart kitchen inventory management",
+            "Plant-based meal planning service",
+            "Restaurant reservation and management system"
+        ]
+    },
+    "retail": {
+        "name": "Retail",
+        "description": "Store & Shopping Innovation",
+        "ideas": [
+            "Smart inventory prediction system",
+            "Customer behavior analytics platform",
+            "Automated checkout solution",
+            "Personalized shopping assistant",
+            "Supply chain optimization tool"
+        ]
+    },
+    "workplace": {
+        "name": "Workplace",
+        "description": "HR & Team Management",
+        "ideas": [
+            "AI-powered recruitment platform",
+            "Employee engagement analytics",
+            "Skills development tracking system",
+            "Remote team management tool",
+            "Automated performance review system"
+        ]
+    },
+    "delivery": {
+        "name": "Delivery",
+        "description": "Logistics & Transportation",
+        "ideas": [
+            "Route optimization platform",
+            "Fleet management system",
+            "Last-mile delivery solution",
+            "Supply chain visibility tool",
+            "Automated warehouse management"
         ]
     }
 }
