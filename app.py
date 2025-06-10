@@ -71,6 +71,10 @@ def domains():
 def validate():
     return render_template('validate.html')
 
+@app.route('/newvalidate')
+def new_validate():
+    return render_template('newvalidate.html')
+
 @app.route('/api/validate-idea', methods=['POST'])
 def validate_idea():
     data = request.json
