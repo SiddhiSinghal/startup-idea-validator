@@ -67,14 +67,14 @@ Open http://localhost:5000
 startup-idea-validator/
 ├── static/
 │   ├── css/
-│   └── images/
 ├── templates/
 │   ├── index.html
-│   └── result.html
+│   |── base.html
+│   ├── domains.html
+│   |── validate.html
 ├── app.py              # Main Flask app
-├── gemini_api.py       # Handles API communication
 ├── requirements.txt
-├── .env                # API key (not committed)
+├── .env                # API key 
 └── README.md
 ```
 ## Team
