@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f9fafb;
             min-height: 100vh;
             color: #333;
         }
@@ -27,13 +27,12 @@
         header {
             text-align: center;
             margin-bottom: 3rem;
-            color: white;
+            color: #333;
         }
 
         header h1 {
             font-size: 3rem;
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         header p {
@@ -49,16 +48,15 @@
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
+            background: #ffffff;
+            border-radius: 10px;
             padding: 2rem;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
         }
 
         .input-section h2 {
-            color: #4c1d95;
+            color: #333;
             margin-bottom: 1.5rem;
             font-size: 1.8rem;
         }
@@ -77,16 +75,16 @@
         input, textarea, select {
             width: 100%;
             padding: 0.75rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
             font-size: 1rem;
             transition: all 0.3s ease;
         }
 
         input:focus, textarea:focus, select:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
         }
 
         textarea {
@@ -95,27 +93,25 @@
         }
 
         .validate-btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: #4f46e5;
             color: white;
             border: none;
             padding: 1rem 2rem;
             font-size: 1.1rem;
             font-weight: 600;
-            border-radius: 50px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
         }
 
         .validate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            background: #4338ca;
         }
 
         .validate-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-            transform: none;
         }
 
         .results-section {
@@ -142,7 +138,7 @@
             font-size: 2rem;
             font-weight: bold;
             color: white;
-            background: conic-gradient(from 0deg, #ef4444, #f97316, #eab308, #22c55e);
+            background: #4f46e5;
         }
 
         .criteria-list {
@@ -156,7 +152,7 @@
             padding: 1rem;
             margin-bottom: 0.5rem;
             background: #f8fafc;
-            border-radius: 10px;
+            border-radius: 6px;
         }
 
         .criteria-score {
@@ -172,15 +168,15 @@
         .score-poor { background: #ef4444; }
 
         .recommendations {
-            background: #fef3c7;
-            border: 1px solid #fcd34d;
-            border-radius: 10px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
             padding: 1.5rem;
             margin-top: 2rem;
         }
 
         .recommendations h3 {
-            color: #92400e;
+            color: #333;
             margin-bottom: 1rem;
         }
 
@@ -191,7 +187,7 @@
 
         .rec-list li {
             margin-bottom: 0.5rem;
-            color: #78350f;
+            color: #4b5563;
         }
 
         .full-width {
@@ -202,7 +198,7 @@
             display: flex;
             margin-bottom: 1rem;
             background: #f1f5f9;
-            border-radius: 10px;
+            border-radius: 6px;
             padding: 0.25rem;
         }
 
@@ -210,7 +206,7 @@
             flex: 1;
             padding: 0.75rem;
             text-align: center;
-            border-radius: 8px;
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 600;
@@ -218,8 +214,8 @@
 
         .tab.active {
             background: white;
-            color: #4c1d95;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            color: #4f46e5;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .tab-content {
@@ -232,14 +228,14 @@
 
         .progress-bar {
             background: #e5e7eb;
-            border-radius: 10px;
+            border-radius: 6px;
             height: 8px;
             margin-bottom: 1rem;
             overflow: hidden;
         }
 
         .progress-fill {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: #4f46e5;
             height: 100%;
             transition: width 0.5s ease;
         }
@@ -249,7 +245,7 @@
             color: white;
             border: none;
             padding: 0.75rem 1.5rem;
-            border-radius: 10px;
+            border-radius: 6px;
             cursor: pointer;
             margin-top: 1rem;
             font-weight: 600;
@@ -279,7 +275,7 @@
             width: 40px;
             height: 40px;
             border: 4px solid #f3f4f6;
-            border-top: 4px solid #667eea;
+            border-top: 4px solid #4f46e5;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto 1rem;
@@ -295,24 +291,23 @@
             border: 1px solid #fecaca;
             color: #dc2626;
             padding: 1rem;
-            border-radius: 10px;
+            border-radius: 6px;
             margin: 1rem 0;
             display: none;
         }
 
         .ai-powered {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
+            background: #ffffff;
+            border-radius: 10px;
             padding: 1.5rem;
             margin-bottom: 2rem;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
             text-align: center;
         }
 
         .ai-powered h3 {
-            color: #4c1d95;
+            color: #333;
             margin-bottom: 0.5rem;
             font-size: 1.2rem;
         }
@@ -700,16 +695,16 @@ Be thorough, honest, and provide actionable insights. Consider market trends, sc
             const container = document.getElementById('aiRecommendations');
             container.innerHTML = `
                 <div style="margin-bottom: 2rem;">
-                    <h4 style="color: #92400e; margin-bottom: 1rem;">🎯 Strategic Recommendations</h4>
+                    <h4 style="color: #333; margin-bottom: 1rem;">🎯 Strategic Recommendations</h4>
                     <ul class="rec-list">
                         ${results.recommendations.map(rec => `<li>${rec}</li>`).join('')}
                     </ul>
                 </div>
                 
                 <div>
-                    <h4 style="color: #92400e; margin-bottom: 1rem;">🚀 Immediate Next Steps</h4>
+                    <h4 style="color: #333; margin-bottom: 1rem;">🚀 Immediate Next Steps</h4>
                     <ol style="list-style-type: decimal; padding-left: 1.5rem;">
-                        ${results.nextSteps.map(step => `<li style="margin-bottom: 0.5rem; color: #78350f;">${step}</li>`).join('')}
+                        ${results.nextSteps.map(step => `<li style="margin-bottom: 0.5rem; color: #4b5563;">${step}</li>`).join('')}
                     </ol>
                 </div>
             `;
